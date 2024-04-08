@@ -1,0 +1,33 @@
+{
+  "name": "luau-electron-bindings",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": "ashleyflow",
+  "homepage": "https://github.com/highflowey/luau-electron-bindings#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/highflowey/luau-electron-bindings.git"
+  },
+  "main": "src/init.luau",
+  "scripts": {
+    "build": "sh ./scripts/build.sh",
+    "clean": "rm -rf node_modules build",
+    "format": "stylua .",
+    "lint": "sh ./scripts/analyze.sh && selene src",
+    "lint:luau": "sh ./scripts/analyze.sh",
+    "lint:selene": "selene src",
+    "prepare": "npmluau",
+    "style-check": "stylua . --check",
+    "verify-pack": "yarn pack --dry-run"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.1"
+  },
+  "keywords": [
+    "luau",
+    "lune",
+    "electrn"
+  ],
+  "packageManager": "yarn@4.1.1"
+}
