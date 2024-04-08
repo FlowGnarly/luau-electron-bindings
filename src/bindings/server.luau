@@ -1,24 +1,24 @@
+local net = require('@lune/net')
+
 export type Listener = (value: any) -> ()
 
-return function(port: number)
-    local net = require('@lune/net')
-
-    local function ascii_to_str(asciiTable: { number })
-        local str = ''
-        for _, ascii in ipairs(asciiTable) do
-            str = str .. string.char(ascii)
-        end
-        return str
+local function ascii_to_str(asciiTable: { number })
+    local str = ''
+    for _, ascii in ipairs(asciiTable) do
+        str = str .. string.char(ascii)
     end
+    return str
+end
 
-    local serve_handle: net.ServeHandle
-    local module = {
-        listeners = {} :: { [string]: { Listener } },
-        kill = function()
-            -- ipc will take over this function
-        end,
-    }
+local serve_handle: net.ServeHandle
+local module = {
+    listeners = {} :: { [string]: { Listener } },
+    kill = function()
+        -- ipc will take over this function
+    end,
+}
 
+function module.start_server(port: number)
     serve_handle = net.serve(port, function(req)
         if req.method == 'POST' then
             if req.path == '/channel' then
@@ -37,6 +37,6 @@ return function(port: number)
 
         return {}
     end)
-
-    return module
 end
+
+return module
