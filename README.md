@@ -1,6 +1,7 @@
 # luau-electron-bindings
+Use this library next to [electron-lune-bindings](https://github.com/HighFlowey/electron-lune-bindings) to bridge lune to electron
 
-used by [lune-electron](https://github.com/HighFlowey/lune-electron/)
+This library is not documented so I recommend using [this](https://github.com/HighFlowey/lune-electron-template) template to get started
 
 ## Installation
 
