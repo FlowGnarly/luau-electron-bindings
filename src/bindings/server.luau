@@ -13,9 +13,8 @@ end
 local serve_handle: net.ServeHandle
 local module = {
     listeners = {} :: { [string]: { Listener } },
-    kill = function()
-        -- ipc will take over this function
-    end,
+    load = function() end,
+    kill = function() end,
 }
 
 function module.start_server(port: number)
@@ -32,6 +31,8 @@ function module.start_server(port: number)
             elseif req.path == '/kill' then
                 serve_handle.stop()
                 module.kill()
+            elseif req.path == '/load' then
+                module.load()
             end
         end
 

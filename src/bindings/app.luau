@@ -1,3 +1,5 @@
+local server = require('server')
+
 type HTMLElementRequested = {
     selector: string?,
     tagName: string?,
@@ -18,6 +20,7 @@ local ipc = require('./ipc')
 local promise = require('promise')
 local task = require('@lune/task')
 
+local on_load_listeners: { (document: Document) -> () } = {}
 local app = {}
 app.reserved_id = 1
 app.reserved_event_id = 1
@@ -131,8 +134,14 @@ local function create_html_element_from_id(id: number): HTMLElement
     return setmetatable({}, mt) :: any
 end
 
+type Document = {
+    query_selector: (selector: string) -> promise.Promise<HTMLElement>,
+    create_element: (tag_name: string, inner_html: string?) -> promise.Promise<HTMLElement>,
+}
+
 app.document = {}
-app.document.querySelector = function(selector: string): promise.Promise<HTMLElement>
+
+app.document.query_selector = function(selector: string): promise.Promise<HTMLElement>
     ipc.send({
         type = 'Method',
         method = 'querySelector',
@@ -165,10 +174,17 @@ app.document.create_element = function(
     end)
 end
 
-ipc.send({
-    type = 'Method',
-    method = 'ready',
-    headers = {},
-})
+server.load = function()
+    app.reserved_id = 1
+    app.reserved_event_id = 1
+
+    for _, callback in on_load_listeners do
+        callback(app.document)
+    end
+end
+
+app.on_load = function(callback: (document: Document) -> ())
+    table.insert(on_load_listeners, callback)
+end
 
 return app

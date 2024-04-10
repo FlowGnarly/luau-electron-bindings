@@ -88,12 +88,4 @@ module.invoke_listeners = function(channel: string)
     end
 end
 
-server.kill = function()
-    module.send({
-        type = 'Method',
-        method = 'kill',
-        headers = {},
-    })
-end
-
 return module
