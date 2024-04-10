@@ -177,6 +177,11 @@ end
 server.load = function()
     app.reserved_id = 1
     app.reserved_event_id = 1
+    ipc.invoke_reserved_id = 1
+
+    for channel, listener in server.listeners do
+        server.listeners[channel] = nil
+    end
 
     for _, callback in on_load_listeners do
         callback(app.document)
