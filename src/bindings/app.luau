@@ -8,11 +8,55 @@ type HTMLElementRequested = {
 
 type Property = { [string]: Property | any }
 
+-- TODO: types are incomplete so finish them later please :)
+export type Event = {
+    eventName: string,
+    altKey: boolean,
+    bubbles: boolean,
+    button: number,
+    buttons: number,
+    cancelBubble: boolean,
+    cancelable: boolean,
+    clientX: number,
+    clientY: number,
+    composed: boolean,
+    ctrlKey: boolean,
+    currentTarget: unknown,
+    defaultPrevented: boolean,
+    detail: number,
+    eventPhase: number,
+    fromElement: unknown,
+    isTrusted: boolean,
+    layerX: number,
+    layerY: number,
+    metaKey: boolean,
+    movementX: number,
+    movementY: number,
+    offsetX: number,
+    offsetY: number,
+    pageX: number,
+    pageY: number,
+    path: unknown,
+    relatedTarget: unknown,
+    returnValue: unknown,
+    screenX: number,
+    screenY: number,
+    shiftKey: boolean,
+    sourceCapabilities: unknown,
+    target: unknown,
+    timeStamp: number,
+    toElement: unknown,
+    view: unknown,
+    which: number,
+    x: number,
+    y: number,
+}
+
 export type HTMLElement = {
     id: number,
     set_prop: (property: string, value: any) -> (),
     set_props: (self: HTMLElement, properties: { [string]: Property | any }) -> (),
-    set_event: (event: string, callback: () -> ()) -> () -> (),
+    set_event: (event: string, callback: (event: Event) -> ()) -> () -> (),
     [string]: any,
 }
 
@@ -74,7 +118,7 @@ local function create_html_element_from_id(id: number): HTMLElement
                 end
             end
         end,
-        set_event = function(event: string, callback: () -> ())
+        set_event = function(event: string, callback: (event: Event) -> ())
             local event_id = app.reserved_event_id
             app.reserved_event_id += 1
 
